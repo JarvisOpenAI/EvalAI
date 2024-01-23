@@ -4462,6 +4462,10 @@ def create_or_update_challenge(request, challenge_host_team_pk):
         data["is_docker_based"] = True
         data["enable_forum"] = True
         data["is_registration_open"] = True
+        data["aws_account_id"] = os.environ.get("HOST_AWS_ACCOUNT_ID", "")
+        data["aws_access_key_id"] = os.environ.get("HOST_AWS_ACCESS_KEY_ID", "")
+        data["aws_secret_access_key"] = os.environ.get("HOST_AWS_SECRET_ACCESS_KEY", "")
+        data["aws_region"] = os.environ.get("HOST_AWS_DEFAULT_REGION", "us-west-1")
         serializer = ZipChallengeSerializer(
             data=data,
             context={

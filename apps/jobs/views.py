@@ -1738,7 +1738,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
             public_results = []
             leaderboard_data_list = []
             for phase_result in results:
-                split = phase_result.get("split")
+                split = phase_result.get("split", "split1")
                 accuracies = phase_result.get("accuracies")
                 show_to_participant = phase_result.get(
                     "show_to_participant", False
@@ -1750,7 +1750,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
                     )
                 except ChallengePhaseSplit.DoesNotExist:
                     response_data = {
-                        "error": "Challenge Phase Split does not exist with phase_id: {} and"
+                        "error": "Challenge Phase Split does not exist with phase_id: {} and "
                         "split codename: {}".format(challenge_phase_pk, split)
                     }
                     return Response(

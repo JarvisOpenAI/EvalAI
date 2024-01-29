@@ -1277,7 +1277,7 @@ def update_submission(request, challenge_pk):
             "submission_result.json", ContentFile(str(public_results).encode("utf-8"))
         )
         submission.submission_metadata_file.save(
-            "submission_metadata_file.json", ContentFile(str(metadata))
+            "submission_metadata_file.json", ContentFile(str(metadata).encode("utf-8"))
         )
         submission.save()
         response_data = {
@@ -1515,7 +1515,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
         stdout_content = request.data.get("stdout", "").encode("utf-8")
         stderr_content = request.data.get("stderr", "").encode("utf-8")
         submission_result = request.data.get("result", "")
-        metadata = request.data.get("metadata", "").encode("utf-8")
+        metadata = request.data.get("metadata", "")
         submission = get_submission_model(submission_pk)
 
         public_results = []
@@ -1672,7 +1672,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
             "submission_result.json", ContentFile(str(public_results).encode("utf-8"))
         )
         submission.submission_metadata_file.save(
-            "submission_metadata_file.json", ContentFile(str(metadata))
+            "submission_metadata_file.json", ContentFile(str(metadata).encode("utf-8"))
         )
         submission.save()
         response_data = {

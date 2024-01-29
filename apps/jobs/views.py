@@ -1763,7 +1763,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
                     )
                 except LeaderboardData.DoesNotExist:
                     response_data = {
-                        "error": "Leaderboard Data does not exist with phase_id: {} and"
+                        "error": "Leaderboard Data does not exist with phase_id: {} and "
                         "submission id: {}".format(
                             challenge_phase_pk, submission_pk
                         )
@@ -1793,7 +1793,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
                 )
                 if len(missing_metrics) and not is_partial_evaluation_phase:
                     response_data = {
-                        "error": "Following metrics are missing in the"
+                        "error": "Following metrics are missing in the "
                         "leaderboard data: {} of challenge phase: {}".format(
                             missing_metrics, challenge_phase_pk
                         )
@@ -1804,7 +1804,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
 
                 if len(malformed_metrics):
                     response_data = {
-                        "error": "Values for following metrics are not of"
+                        "error": "Values for following metrics are not of "
                         "float/int: {}".format(malformed_metrics)
                     }
                     return Response(

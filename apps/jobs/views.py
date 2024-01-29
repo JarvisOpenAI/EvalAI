@@ -1274,7 +1274,7 @@ def update_submission(request, challenge_pk):
         submission.stderr_file.save("stderr.txt", ContentFile(stderr_content))
         submission.environment_log_file.save("environment_log.txt", ContentFile(environment_log_content))
         submission.submission_result_file.save(
-            "submission_result.json", ContentFile(str(public_results))
+            "submission_result.json", ContentFile(str(public_results).encode("utf-8"))
         )
         submission.submission_metadata_file.save(
             "submission_metadata_file.json", ContentFile(str(metadata))
@@ -1512,10 +1512,10 @@ def update_partially_evaluated_submission(request, challenge_pk):
         challenge_phase_pk = request.data.get("challenge_phase")
         submission_pk = request.data.get("submission")
         submission_status = request.data.get("submission_status", "").lower()
-        stdout_content = request.data.get("stdout", "")
-        stderr_content = request.data.get("stderr", "")
+        stdout_content = request.data.get("stdout", "").encode("utf-8")
+        stderr_content = request.data.get("stderr", "").encode("utf-8")
         submission_result = request.data.get("result", "")
-        metadata = request.data.get("metadata", "")
+        metadata = request.data.get("metadata", "").encode("utf-8")
         submission = get_submission_model(submission_pk)
 
         public_results = []
@@ -1669,7 +1669,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
         submission.stdout_file.save("stdout.txt", ContentFile(stdout_content))
         submission.stderr_file.save("stderr.txt", ContentFile(stderr_content))
         submission.submission_result_file.save(
-            "submission_result.json", ContentFile(str(public_results))
+            "submission_result.json", ContentFile(str(public_results).encode("utf-8"))
         )
         submission.submission_metadata_file.save(
             "submission_metadata_file.json", ContentFile(str(metadata))
@@ -1720,8 +1720,8 @@ def update_partially_evaluated_submission(request, challenge_pk):
             or submission_status == Submission.FINISHED
         ):
             challenge_phase_pk = request.data.get("challenge_phase")
-            stdout_content = request.data.get("stdout", "")
-            stderr_content = request.data.get("stderr", "")
+            stdout_content = request.data.get("stdout", "").encode('utf-8')
+            stderr_content = request.data.get("stderr", "").encode('utf-8')
             submission_result = request.data.get("result", "")
 
             try:
@@ -1861,7 +1861,7 @@ def update_partially_evaluated_submission(request, challenge_pk):
                 "stderr.txt", ContentFile(stderr_content)
             )
             submission.submission_result_file.save(
-                "submission_result.json", ContentFile(str(public_results))
+                "submission_result.json", ContentFile(str(public_results).encode('utf-8'))
             )
             submission.save()
             response_data = {

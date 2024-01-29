@@ -50,7 +50,6 @@ DATADOG_APP_KEY = os.environ.get("DATADOG_APP_KEY")
 DATADOG_API_KEY = os.environ.get("DATADOG_API_KEY")
 
 MIDDLEWARE += [  # noqa: ignore=F405
-    "middleware.metrics.DatadogMiddleware"
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "silk.middleware.SilkyMiddleware",
 ]  # noqa

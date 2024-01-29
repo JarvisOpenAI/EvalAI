@@ -57,7 +57,6 @@ MIDDLEWARE += [  # noqa: ignore=F405
 
 INSTALLED_APPS += [  # noqa: ignore=F405
     "storages",
-    "raven.contrib.django.raven_compat"
     "django_spaghetti",
     "autofixture",
     "debug_toolbar",

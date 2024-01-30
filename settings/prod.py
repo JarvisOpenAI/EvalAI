@@ -4,7 +4,7 @@ from corsheaders.defaults import default_methods
 import os
 # import raven
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -49,41 +49,9 @@ DATADOG_APP_NAME = os.environ.get("DATADOG_APP_NAME", "Arena")
 DATADOG_APP_KEY = os.environ.get("DATADOG_APP_KEY")
 DATADOG_API_KEY = os.environ.get("DATADOG_API_KEY")
 
-MIDDLEWARE += [  # noqa: ignore=F405
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "silk.middleware.SilkyMiddleware",
-]  # noqa
+MIDDLEWARE += ["middleware.metrics.DatadogMiddleware"]  # noqa
 
-INSTALLED_APPS += [  # noqa: ignore=F405
-    "storages",
-    "django_spaghetti",
-    "autofixture",
-    "debug_toolbar",
-    "django_extensions",
-    "silk",
-]
-
-SPAGHETTI_SAUCE = {
-    "apps": [
-        "auth",
-        "accounts",
-        "analytics",
-        "base",
-        "challenges",
-        "hosts",
-        "jobs",
-        "participants",
-        "web",
-    ],
-    "show_fields": True,
-}
-
-CACHES = {
-    "default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
-    "throttling": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
-}
-
-SILKY_PYTHON_PROFILER = True
+INSTALLED_APPS += ("storages", "raven.contrib.django.raven_compat")  # noqa
 
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_DEFAULT_REGION = os.environ.get("AWS_DEFAULT_REGION")
@@ -125,9 +93,9 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
 REST_FRAMEWORK_DOCS = {"HIDE_DOCS": True}
 
 # Port number for the python-memcached cache backend.
-# CACHES["default"]["LOCATION"] = os.environ.get(  # noqa: ignore=F405
-#     "MEMCACHED_LOCATION"
-# )  # noqa: ignore=F405
+CACHES["default"]["LOCATION"] = os.environ.get(  # noqa: ignore=F405
+    "MEMCACHED_LOCATION"
+)  # noqa: ignore=F405
 
 # RAVEN_CONFIG = {
 #     "dsn": os.environ.get("SENTRY_URL"),

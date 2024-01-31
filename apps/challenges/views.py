@@ -4600,8 +4600,11 @@ def create_or_update_challenge_phase(request, challenge_host_team_pk, challenge_
                         serializer.save()
                         response_data["dataset_split"] = serializer.data
                     else:
-                        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+                        logger.error(serializer.errors)
+                        response_data = {
+                            "error": "Internal error in the service. Failed to create Challenge Dataset Split."
+                                     " Please contact the administrator."}
+                        raise RuntimeError(response_data)
                     data = {
                         "challenge_phase": challenge_phase.pk,
                         "leaderboard": 21,  # Todo Destroy the magic number
@@ -4615,10 +4618,18 @@ def create_or_update_challenge_phase(request, challenge_host_team_pk, challenge_
                         serializer.save()
                         response_data["challenge_phase_split"] = serializer.data
                     else:
-                        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        logger.error(serializer.errors)
+                        response_data = {
+                            "error": "Internal error in the service. Failed to create Challenge Phase Split."
+                                     " Please contact the administrator."}
+                        raise RuntimeError(response_data)
                     return Response(response_data, status=status.HTTP_201_CREATED)
                 else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    logger.error(serializer.errors)
+                    response_data = {
+                        "error": "Internal error in the service. Failed to create Challenge Phase."
+                                 " Please contact the administrator."}
+                    raise RuntimeError(response_data)
         except Exception as exc:
             return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -4640,7 +4651,7 @@ def create_or_update_challenge_phase(request, challenge_host_team_pk, challenge_
         challenge_phase.is_public = request.data.get("is_public")
         challenge_phase.is_submission_public = request.data.get("is_submission_public")
         challenge_phase.start_date = datetime.strptime(request.data.get("start_date"), "%Y-%m-%dT%H:%M:%S%z")
-        challenge_phase.end_date = datetime.strptime(request.data.get("start_date"), "%Y-%m-%dT%H:%M:%S%z")
+        challenge_phase.end_date = datetime.strptime(request.data.get("end_date"), "%Y-%m-%dT%H:%M:%S%z")
         challenge_phase.test_annotation_file = request.data.get("test_annotation_file")
         challenge_phase.max_submissions_per_day = request.data.get("max_submissions_per_day")
         challenge_phase.max_submissions_per_month = request.data.get("max_submissions_per_month")
